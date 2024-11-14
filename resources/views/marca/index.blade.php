@@ -1,46 +1,64 @@
 @extends('layouts.app')
 
-@section('title','Tienda de Maquillaje | Marca')
+@section('title', 'Lista de marcas')
 
 @section('content')
 @include('sweetalert::alert')
-    <h1>Marcas registradas</h1>
 
-    <a href="/marca/crear" class="btn btn-primary">Nueva marca</a>
-    <br>
-    <table class="table table-striped">
+//sweet p todos 3
+@if (session('alert'))
+    <script>
+        swal.fire({
+            title: '{{ session('alert')['title'] }}',
+            text: '{{sesion('alert')['message'] }}',
+            icon: '{{sesion('alert')['type'] }}',
+            confirmButtonText: 'ok'
+        })
+        
+    </script>
+    @endif
+
+
+
+<h1>Marcas</h1>
+<div class="text-end">
+    <a href="{{ route('marca.create') }}" class="btn btn-success">Crear</a>
+</div>
+<br>
+<table class="table table-striped">
+    <thead>
         <tr>
-            <th>ID</th>
-            <th>NOMBRE</th> 
-            <th>ORIGEN</th>
-            <th>UBICACIÓN</th>
-            <th>MOSTRAR</th>
-            <th>EDITAR</th>
-            <th>ELIMINAR</th>
+        <th scope="col">ID</th>
+        <th scope="col">NOMBRE</th>
+        <th scope="col">ORIGEN</th>
+        <th scope="col">DISPONIBLE</th>
+        <th scope="col"></th>
+        <th scope="col"></th>
         </tr>
+    </thead>
+    <tbody>
+    @foreach($marcas as $marca)
+        <tr>
+            <td>{{ $marca->id }}</td>
+            <td>{{ $marca->nombre }}</td>
+            <td>{{ $marca->origen }}</td>
+            <td>{{ $marca->disponible }}</td>
+            <td>
+                <a href="{{ route('marca.update', $marca->id)}}" class="btn btn-primary"> Editar </a>
+            </td>
+            <td>
+                <form action="{{ route('marca.destroy', $marca->id)}}" method="post">
+                    @csrf
+                    @method('DELETE')
+                    <button type='submit' class="btn btn-danger">
+                        Eliminar
+                    </button>
+                </form>
+            </td>
+        </tr>
+    @endforeach
+    </tbody>
+</table>
+{{ $marcas->links('pagination::bootstrap-4') }}
 
-        @foreach ($marcas as $marca)
-            <tr>
-                <td><h3>{{ $marca->id }}</h3></td>
-                <td><h3>{{ $marca->nombre }}</h3></td>
-                <td><h3>{{ $marca->origen }}</h3></td>
-                <td><h3>{{ $marca->ubicacion }}</h3></td>
-                <td>
-                    <button class="btn btn-success"><a href="/marca/{{ $marca->id }}" class="acciones">MOSTRAR</a></button>
-                </td>
-                <td>
-                    <button class="btn btn-warning"><a href="/marca/{{ $marca->id }}/editar" class="acciones">EDITAR</a></button>
-                </td>
-                <td>
-                    <form action="/marca/{{ $marca->id }}" method="post">
-                        @csrf
-                        @method('DELETE')
-                        <button type='submit' class="btn btn-danger">ELIMINAR</button>
-                    </form>
-                </td>
-            </tr>    
-        @endforeach
-    </table>
-
-{{ $marcas->links() }}
 @endsection

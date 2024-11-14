@@ -3,6 +3,21 @@
 @section('title', 'Lista de productos')
 
 @section('content')
+@include('sweetalert::alert')
+
+//sweet p todos 1
+@if (session('alert'))
+    <script>
+        swal.fire({
+            title: '{{ session('alert')['title'] }}',
+            text: '{{sesion('alert')['message'] }}',
+            icon: '{{sesion('alert')['type'] }}',
+            confirmButtonText: 'ok'
+        })
+        
+    </script>
+    @endif
+
 
 <h1>Productos</h1>
 <div class="text-end">

@@ -46,9 +46,8 @@ class UsuarioController extends Controller
             'role' => $validated['role'],
         ]);
 
-        return redirect()->route('user.index');
-
         Alert::success('Usuario creado', 'El usuario ha sido creado correctamente')->flash();
+        return redirect()->route('user.index');
     }
 
     /**
@@ -84,8 +83,9 @@ class UsuarioController extends Controller
         $user->email = $request->email;
         $user->save();
 
-        return redirect()->route('user.index');
+        // sweet p todos 2
         Alert::success('Exito', 'Los datos han sido guardados correctamente');
+        return redirect()->route('user.index');
     }
 
     /**
@@ -99,4 +99,3 @@ class UsuarioController extends Controller
         return redirect()->route('user.index');
     }
 }
-

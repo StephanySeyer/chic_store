@@ -8,55 +8,92 @@ use RealRashid\SweetAlert\Facades\Alert;
 
 class MarcaController extends Controller
 {
+    //hecho el mierc
+    /**
+     * Display a listing of the resource.
+     */
     public function index()
     {
-        $marcas = Marca::paginate(5);
-        return view('marca.index', ['marcas' => $marcas]);
+        $marcas = Marca::paginate(3);
+        return view('marca.index', compact('marcas'));
     }
 
+    /**
+     * Show the form for creating a new resource.
+     */
     public function create()
     {
         return view('marca.create');
     }
 
+    /**
+     * Store a newly created resource in storage.
+     */
     public function store(Request $request)
     {
-        $marca = new Marca();
-        $marca->nombre = $request->post('nombre');
-        $marca->origen = $request->post('origen');
-        $marca->ubicacion = $request->post('ubicacion');
-
-        $marca->save();
+        $validated = $request->validate([
+            'nombre' => 'required|string|max:50',
+            'origen' => 'required|string|max:255',
+            'disponible' => 'required|string|max:50',
+        ]);
         
-        Alert::success('Marca guardada', 'La marca se creó correctamente');
+        Marca::create([
+            'nombre' => $validated['nombre'],
+            'origen' => $validated['origen'],
+            'disponible' => $validated['disponible'],
+
+        ]);
+        Alert::success('Marca creada', 'La marca ha sido creada correctamente')->flash();
         return redirect()->route('marca.index');
     }
 
+    /**
+     * Display the specified resource.
+     */
+    public function show(string $id)
+    {
+        //
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     */
     public function edit($id)
     {
         $marca = Marca::find($id);
         return view('marca.edit', compact('marca'));
     }
 
+    /**
+     * Update the specified resource in storage.
+     */
     public function update(Request $request, $id)
     {
+        $request->validate([
+            'nombre' => 'required|string|max:50',
+            'origen' => 'required|string|max:255',
+            'disponible' => 'required|integer|max:50',
+        ]);
+
         $marca = Marca::find($id);
         $marca->nombre = $request->nombre;
         $marca->origen = $request->origen;
-        $marca->ubicacion = $request->ubicacion;
-
+        $marca->disponible = $request->disponible;
         $marca->save();
-        
-        Alert::success('Marca editada', 'Se editó la información de la marca');
+
+        //sweet en todos 2
+        Alert::success('Exito', 'Los datos han sido guardados correctamente');
         return redirect()->route('marca.index');
     }
 
+    /**
+     * Remove the specified resource from storage.
+     */
     public function destroy($id)
     {
         $marca = Marca::find($id);
         $marca->delete();
-        
-        Alert::success('Marca eliminada', 'La marca se eliminó correctamente');
+        Alert::success('Exito', 'La marca ha sido eliminado correctamente');
         return redirect()->route('marca.index');
     }
 }

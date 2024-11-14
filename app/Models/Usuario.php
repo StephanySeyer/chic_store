@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Usuario extends Model
 {
+    //HECHO EL  MARTES REP.OS
     use HasFactory;
 
     protected $table = "usuarios";

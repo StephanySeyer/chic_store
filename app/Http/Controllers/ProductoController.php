@@ -8,6 +8,7 @@ use RealRashid\SweetAlert\Facades\Alert;
 
 class ProductoController extends Controller
 {
+    //hecho el martes rep os
     /**
      * Display a listing of the resource.
      */
@@ -87,8 +88,10 @@ class ProductoController extends Controller
         $product->category = $request->category;
         $product->save();
 
+            //sweet alert en tdos 1
+            Alert::success('Exito', 'Los datos han sido guardados correctamente');
         return redirect()->route('product.index');
-        Alert::success('Exito', 'Los datos han sido guardados correctamente');
+        
     }
 
     /**

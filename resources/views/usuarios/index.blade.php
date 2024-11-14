@@ -4,6 +4,22 @@
 
 @section('content')
 @include('sweetalert::alert')
+
+//sweet p todos 2
+@if (session('alert'))
+    <script>
+        swal.fire({
+            title: '{{ session('alert')['title'] }}',
+            text: '{{sesion('alert')['message'] }}',
+            icon: '{{sesion('alert')['type'] }}',
+            confirmButtonText: 'ok'
+        })
+        
+    </script>
+    @endif
+
+
+
 <h1>Usuarios</h1>
 <div class="text-end">
     <a href="{{ route('user.create') }}" class="btn btn-success">Crear</a>
